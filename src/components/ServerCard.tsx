@@ -20,16 +20,16 @@ interface Site {
 
 export function ServerCard({ id, name, ip_address, status, sites, sitesError }: ServerCardProps) {
   return (
-    <div className="border border-gray-700 rounded-lg p-6 shadow-lg bg-gray-800">
+    <div className="rounded-lg p-6 shadow-lg bg-gray-800">
       <div className="flex items-center justify-between mb-2">
         <div>
-          <h2 className="text-xl font-semibold text-white">{name}</h2>
+          <h2 className="text-xl text-white">Server: {name}</h2>
           <div className="text-gray-400 text-sm">{ip_address}</div>
         </div>
         <span className={`px-2 py-1 rounded text-xs font-medium ${status === 'active' ? 'bg-green-900 text-green-200' : 'bg-gray-700 text-gray-300'}`}>{status}</span>
       </div>
       <div className="mt-4">
-        <h3 className="font-medium mb-2 text-white">Sites</h3>
+        <h3 className=" mb-2 text-white">Sites</h3>
         {sitesError && <div className="text-red-400 text-sm mb-2">{sitesError}</div>}
         {sites.length === 0 && !sitesError ? (
           <div className="text-gray-500 text-sm">No sites found for this server.</div>
@@ -37,19 +37,18 @@ export function ServerCard({ id, name, ip_address, status, sites, sitesError }: 
           <ul className="space-y-2">
             {sites.map((site: Site) => (
               <li key={site.id} className="border border-gray-700 p-3 rounded flex flex-col sm:flex-row sm:items-center sm:justify-between bg-gray-750">
-                <div>
+                <div className="flex-auto">
                   <a 
                     href={`https://${site.domain}`} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="font-semibold text-lg text-blue-400 hover:text-blue-300 hover:underline"
+                    className=" text-lg text-blue-400 hover:text-blue-300 hover:underline"
                   >
                     {site.domain}
                   </a>
-                  <span className="ml-2 text-xs text-gray-400">({site.project_type})</span>
                 </div>
-                <span className={`mt-1 sm:mt-0 px-2 py-0.5 rounded text-xs font-medium ${site.status === 'active' ? 'bg-green-900 text-green-200' : 'bg-gray-700 text-gray-300'}`}>{site.status}</span>
-                <div className="mt-2">
+                <span className={`mt-1 sm:mt-0 px-2 py-0.5 rounded text-xs font-medium mr-3 ${site.status === 'active' ? 'bg-green-900 text-green-200' : 'bg-gray-700 text-gray-300'}`}>{site.status}</span>
+                <div className="">
                   {site.has_repository && <DeploySiteButton serverId={id} siteId={site.id} />}
                 </div>
               </li>
@@ -93,7 +92,7 @@ function DeploySiteButton({ serverId, siteId }: { serverId: number; siteId: numb
   }
 
   return (
-    <div className="mt-2">
+    <div className="mt-2 sm:mt-0">
       <button
         onClick={handleDeploy}
         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50 transition-colors"
