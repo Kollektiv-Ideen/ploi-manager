@@ -1,6 +1,5 @@
 "use client";
 import * as React from "react";
-import { CreateSiteForm } from "@/components/CreateSiteForm";
 import { InstallRepoForm } from "@/components/InstallRepoForm";
 
 interface ServerCardProps {
@@ -8,17 +7,19 @@ interface ServerCardProps {
   name: string;
   ip_address: string;
   status: string;
-  sites: any[];
+  sites: Site[];
   sitesError: string | null;
 }
 
+interface Site {
+  id: number;
+  domain: string;
+  project_type: string;
+  status: string;
+  has_repository?: boolean;
+}
+
 export function ServerCard({ id, name, ip_address, status, sites, sitesError }: ServerCardProps) {
-  const [created, setCreated] = React.useState(false);
-
-  function handleSuccess() {
-    setCreated(true);
-  }
-
   return (
     <div className="border rounded-lg p-6 shadow-lg bg-white dark:bg-zinc-900">
       <div className="flex items-center justify-between mb-2">
@@ -35,7 +36,7 @@ export function ServerCard({ id, name, ip_address, status, sites, sitesError }: 
           <div className="text-gray-400 text-sm">No sites found for this server.</div>
         ) : (
           <ul className="space-y-2">
-            {sites.map((site: any) => (
+            {sites.map((site: Site) => (
               <li key={site.id} className="border p-3 rounded flex flex-col sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <a 
@@ -87,8 +88,8 @@ function DeploySiteButton({ serverId, siteId }: { serverId: number; siteId: numb
       });
       if (!deployRes.ok) throw new Error("Failed to trigger deployment");
       setSuccess(true);
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Failed to deploy');
     } finally {
       setLoading(false);
     }
@@ -126,8 +127,8 @@ function CreateCertificateButton({ serverId, siteId, domain }: { serverId: numbe
       });
       if (!res.ok) throw new Error("Failed to create certificate");
       setSuccess(true);
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Failed to create certificate');
     } finally {
       setLoading(false);
     }

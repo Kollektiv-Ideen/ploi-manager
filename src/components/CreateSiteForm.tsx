@@ -12,7 +12,7 @@ export function CreateSiteForm({ serverId, onSuccess }: CreateSiteFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
-  const [results, setResults] = useState<any>(null);
+  const [results, setResults] = useState<Record<string, unknown> | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -38,8 +38,8 @@ export function CreateSiteForm({ serverId, onSuccess }: CreateSiteFormProps) {
       setResults(data.data);
       setDomain("");
       if (onSuccess) onSuccess();
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Failed to create site');
     } finally {
       setLoading(false);
     }

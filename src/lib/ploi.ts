@@ -1,5 +1,3 @@
-import type { NextRequest } from 'next/server';
-
 const API_URL = 'https://ploi.io/api';
 const API_TOKEN = process.env.API_TOKEN;
 

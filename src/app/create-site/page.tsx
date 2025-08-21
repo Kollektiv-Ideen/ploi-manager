@@ -1,11 +1,19 @@
 "use client";
-import { CreateSiteForm } from "@/components/CreateSiteForm";
+import * as React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { CreateSiteForm } from "@/components/CreateSiteForm";
+
+interface Server {
+  id: number;
+  name: string;
+  ip_address: string;
+  status: string;
+}
 
 export default function CreateSitePage() {
   const [serverId, setServerId] = useState<number | null>(null);
-  const [servers, setServers] = useState<any[]>([]);
+  const [servers, setServers] = useState<Server[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -18,8 +26,8 @@ export default function CreateSitePage() {
         const res = await fetch("/api/servers");
         const data = await res.json();
         setServers(data.data || data);
-      } catch (e: any) {
-        setError(e.message);
+      } catch (e: unknown) {
+        setError(e instanceof Error ? e.message : 'Failed to fetch servers');
       } finally {
         setLoading(false);
       }
@@ -46,7 +54,7 @@ export default function CreateSitePage() {
             onChange={e => setServerId(Number(e.target.value))}
           >
             <option value="" disabled>Select a server</option>
-            {servers.map((server: any) => (
+            {servers.map((server: Server) => (
               <option key={server.id} value={server.id}>{server.name} ({server.ip_address})</option>
             ))}
           </select>

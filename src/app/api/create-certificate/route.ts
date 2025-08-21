@@ -11,9 +11,9 @@ export async function POST(req: NextRequest) {
     }
     const result = await ploi.createCertificate(serverId, siteId, domain);
     return NextResponse.json({ success: true, data: result });
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error('Error in /api/create-certificate:', e);
-    if (e && e.stack) console.error(e.stack);
-    return NextResponse.json({ error: e?.message || String(e) }, { status: 500 });
+    if (e && typeof e === 'object' && 'stack' in e) console.error(e.stack);
+    return NextResponse.json({ error: e instanceof Error ? e.message : String(e) }, { status: 500 });
   }
 }

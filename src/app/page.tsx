@@ -4,26 +4,41 @@ import { ploi } from "@/lib/ploi";
 import Link from "next/link";
 import { ServerCard } from "@/components/ServerCard";
 
+interface Server {
+  id: number;
+  name: string;
+  ip_address: string;
+  status: string;
+}
+
+interface Site {
+  id: number;
+  domain: string;
+  project_type: string;
+  status: string;
+  has_repository?: boolean;
+}
+
 export default async function Dashboard() {
-  let servers: any[] = [];
-  let error = null;
+  let servers: Server[] = [];
+  let error: string | null = null;
   try {
     const res = await ploi.listServers();
     servers = res.data || res;
-  } catch (e: any) {
-    error = e.message;
+  } catch (e: unknown) {
+    error = e instanceof Error ? e.message : 'Failed to fetch servers';
   }
 
   // Fetch sites for each server on the server side
   const serversWithSites = await Promise.all(
     servers.map(async (server) => {
-      let sites: any[] = [];
-      let sitesError = null;
+      let sites: Site[] = [];
+      let sitesError: string | null = null;
       try {
         const res = await ploi.listSites(server.id);
         sites = res.data || res;
-      } catch (e: any) {
-        sitesError = e.message;
+      } catch (e: unknown) {
+        sitesError = e instanceof Error ? e.message : 'Failed to fetch sites';
       }
       return { ...server, sites, sitesError };
     })

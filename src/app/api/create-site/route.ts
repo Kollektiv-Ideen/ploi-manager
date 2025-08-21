@@ -7,7 +7,7 @@ function wait(ms: number) {
 }
 
 export async function POST(req: NextRequest) {
-  const context: Record<string, any> = {};
+  const context: Record<string, unknown> = {};
   try {
     const body = await req.json();
     const { serverId, domain, root_domain, project_type } = body;
@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
     context.deploy = deploy;
 
     return NextResponse.json({ success: true, data: context });
-  } catch (e: any) {
-    return NextResponse.json({ error: e?.message || String(e), context }, { status: 500 });
+  } catch (e: unknown) {
+    return NextResponse.json({ error: e instanceof Error ? e.message : String(e), context }, { status: 500 });
   }
 }

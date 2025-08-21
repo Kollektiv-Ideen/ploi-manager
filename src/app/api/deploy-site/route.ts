@@ -20,9 +20,9 @@ export async function POST(req: NextRequest) {
     // 3. Trigger the deploy
     const result = await ploi.deploySite(serverId, siteId);
     return NextResponse.json({ success: true, data: result });
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error('Error in /api/deploy-site:', e);
-    if (e && e.stack) console.error(e.stack);
-    return NextResponse.json({ error: e?.message || String(e) }, { status: 500 });
+    if (e && typeof e === 'object' && 'stack' in e) console.error(e.stack);
+    return NextResponse.json({ error: e instanceof Error ? e.message : String(e) }, { status: 500 });
   }
 }

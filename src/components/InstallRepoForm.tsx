@@ -30,8 +30,8 @@ export function InstallRepoForm({ serverId, siteId, onSuccess }: InstallRepoForm
       if (!res.ok) throw new Error("Failed to install repo");
       setSuccess(true);
       if (onSuccess) onSuccess();
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Failed to install repo');
     } finally {
       setLoading(false);
     }
