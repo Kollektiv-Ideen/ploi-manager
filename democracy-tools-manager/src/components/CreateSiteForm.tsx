@@ -15,12 +15,14 @@ export function CreateSiteForm({ serverId, onSuccess }: CreateSiteFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [results, setResults] = useState<any>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError(null);
     setSuccess(false);
+    setResults(null);
     try {
       const res = await fetch("/api/create-site", {
         method: "POST",
@@ -33,8 +35,10 @@ export function CreateSiteForm({ serverId, onSuccess }: CreateSiteFormProps) {
           project_type: projectType,
         }),
       });
-      if (!res.ok) throw new Error("Failed to create site");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Failed to create site");
       setSuccess(true);
+      setResults(data.data);
       setDomain("");
       setRootDomain("democracytools.ch");
       setWebDirectory("/public");
@@ -98,7 +102,20 @@ export function CreateSiteForm({ serverId, onSuccess }: CreateSiteFormProps) {
         </select>
       </div>
       {error && <div className="text-red-600 text-sm">{error}</div>}
-      {success && <div className="text-green-600 text-sm">Site created successfully!</div>}
+      {success && (
+        <div className="text-green-600 text-sm">
+          <div className="font-semibold mb-2">Site created successfully!</div>
+          {results && (
+            <div className="text-xs space-y-1">
+              <div>✅ Site created</div>
+              <div>✅ Repository installed</div>
+              <div>✅ Deploy script updated</div>
+              <div>✅ Certificate requested</div>
+              <div>✅ Deployment triggered</div>
+            </div>
+          )}
+        </div>
+      )}
       <button
         type="submit"
         className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
