@@ -39,7 +39,7 @@ export default function CreateSitePage() {
     // Trigger a revalidation of the dashboard
     try {
       await fetch('/api/revalidate?path=/');
-    } catch (e) {
+    } catch {
       // Ignore revalidation errors
     }
     router.push("/");
