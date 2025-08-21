@@ -20,7 +20,7 @@ export function ServerCard({ id, name, ip_address, status, sites, sitesError }: 
   }
 
   return (
-    <div className="border rounded-lg p-6 shadow-sm bg-white dark:bg-zinc-900">
+    <div className="border rounded-lg p-6 shadow-lg bg-white dark:bg-zinc-900">
       <div className="flex items-center justify-between mb-2">
         <div>
           <h2 className="text-xl font-semibold">{name}</h2>
@@ -42,7 +42,7 @@ export function ServerCard({ id, name, ip_address, status, sites, sitesError }: 
                     href={`https://${site.domain}`} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="font-mono text-sm text-blue-600 hover:text-blue-800 hover:underline"
+                    className="font-sans font-semibold text-lg text-blue-600 hover:text-blue-800 hover:underline"
                   >
                     {site.domain}
                   </a>
