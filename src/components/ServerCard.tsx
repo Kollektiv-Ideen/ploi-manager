@@ -38,7 +38,14 @@ export function ServerCard({ id, name, ip_address, status, sites, sitesError }: 
             {sites.map((site: any) => (
               <li key={site.id} className="border p-3 rounded flex flex-col sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <span className="font-mono text-sm">{site.domain}</span>
+                  <a 
+                    href={`https://${site.domain}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="font-mono text-sm text-blue-600 hover:text-blue-800 hover:underline"
+                  >
+                    {site.domain}
+                  </a>
                   <span className="ml-2 text-xs text-gray-500">({site.project_type})</span>
                 </div>
                 <span className={`mt-1 sm:mt-0 px-2 py-0.5 rounded text-xs font-medium ${site.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-200 text-gray-600'}`}>{site.status}</span>

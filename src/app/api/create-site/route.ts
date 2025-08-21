@@ -28,9 +28,9 @@ export async function POST(req: NextRequest) {
 
     // 2) Install repository
     const install = await ploi.installRepo(serverId, siteId, {
-      provider: 'github',
-      name: 'Kollektiv-Ideen/democracy-tools',
-      branch: 'kirby5',
+      provider: process.env.REPO_PROVIDER || 'github',
+      name: process.env.REPO_NAME || 'Kollektiv-Ideen/democracy-tools',
+      branch: process.env.REPO_BRANCH || 'kirby5',
     });
     context.installRepo = install;
 
@@ -39,7 +39,8 @@ export async function POST(req: NextRequest) {
 
     // 3) Update deploy script from account script id 8157
     console.log('Fetching script 8157...');
-    const scriptRes = await ploi.getScript(8157);
+    const scriptId = process.env.DEPLOY_SCRIPT_ID || '8157';
+    const scriptRes = await ploi.getScript(Number(scriptId));
     console.log('Script response:', JSON.stringify(scriptRes, null, 2));
     
     // Try different possible response formats

@@ -9,9 +9,6 @@ interface CreateSiteFormProps {
 
 export function CreateSiteForm({ serverId, onSuccess }: CreateSiteFormProps) {
   const [domain, setDomain] = useState("");
-  const [rootDomain, setRootDomain] = useState("");
-  const [webDirectory, setWebDirectory] = useState("public");
-  const [projectType, setProjectType] = useState("php");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -30,9 +27,9 @@ export function CreateSiteForm({ serverId, onSuccess }: CreateSiteFormProps) {
         body: JSON.stringify({
           serverId,
           domain,
-          root_domain: rootDomain,
-          web_directory: webDirectory,
-          project_type: projectType,
+          root_domain: domain,
+          web_directory: "/public",
+          project_type: "php",
         }),
       });
       const data = await res.json();
@@ -40,9 +37,6 @@ export function CreateSiteForm({ serverId, onSuccess }: CreateSiteFormProps) {
       setSuccess(true);
       setResults(data.data);
       setDomain("");
-      setRootDomain("democracytools.ch");
-      setWebDirectory("/public");
-      setProjectType("php");
       if (onSuccess) onSuccess();
     } catch (e: any) {
       setError(e.message);
@@ -64,42 +58,6 @@ export function CreateSiteForm({ serverId, onSuccess }: CreateSiteFormProps) {
           required
           placeholder="sub.example.com"
         />
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Root Domain</label>
-        <input
-          type="text"
-          className="w-full border rounded px-3 py-2"
-          value={rootDomain}
-          onChange={e => setRootDomain(e.target.value)}
-          required
-          placeholder="example.com"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Web Directory</label>
-        <input
-          type="text"
-          className="w-full border rounded px-3 py-2"
-          value={webDirectory}
-          onChange={e => setWebDirectory(e.target.value)}
-          required
-          placeholder="/public"
-        />
-      </div>
-      <div>
-        <label className="block text-sm font-medium mb-1">Project Type</label>
-        <select
-          className="w-full border rounded px-3 py-2"
-          value={projectType}
-          onChange={e => setProjectType(e.target.value)}
-        >
-          <option value="php">PHP</option>
-          <option value="laravel">Laravel</option>
-          <option value="statamic">Statamic</option>
-          <option value="symfony">Symfony</option>
-          <option value="wordpress">WordPress</option>
-        </select>
       </div>
       {error && <div className="text-red-600 text-sm">{error}</div>}
       {success && (
