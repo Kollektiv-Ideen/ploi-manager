@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ploi } from '@/lib/ploi';
 
-export async function POST(req: NextRequest, { params }: { params: { server: string; site: string } }) {
+export async function POST(req: NextRequest, { params }: { params: Promise<{ server: string; site: string }> }) {
   try {
-    const serverId = Number(params.server);
-    const siteId = Number(params.site);
+    const { server, site } = await params;
+    const serverId = Number(server);
+    const siteId = Number(site);
     if (!serverId || !siteId) {
       return NextResponse.json({ error: 'Missing server or site id' }, { status: 400 });
     }
