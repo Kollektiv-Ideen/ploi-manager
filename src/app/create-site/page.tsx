@@ -35,7 +35,13 @@ export default function CreateSitePage() {
     fetchServers();
   }, []);
 
-  function handleSuccess() {
+  async function handleSuccess() {
+    // Trigger a revalidation of the dashboard
+    try {
+      await fetch('/api/revalidate?path=/');
+    } catch (e) {
+      // Ignore revalidation errors
+    }
     router.push("/");
   }
 
