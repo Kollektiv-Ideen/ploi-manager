@@ -44,25 +44,25 @@ export default async function Dashboard() {
     })
   );
 
-  return (
-    <div className="container mx-auto py-12">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-3xl font-bold">Democracy Tools Manager</h1>
-        <Link href="/create-site">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Create New Site</button>
-        </Link>
-      </div>
-      {error && (
-        <div className="bg-red-100 text-red-800 p-4 rounded mb-6">{error}</div>
-      )}
-      <div className="space-y-8">
-        {serversWithSites.length === 0 && !error && (
-          <div className="text-gray-500">No servers found.</div>
-        )}
-        {serversWithSites.map((server) => (
-          <ServerCard key={server.id} {...server} />
-        ))}
-      </div>
-    </div>
-  );
+                return (
+                <div className="container mx-auto py-12">
+                  <div className="flex items-center justify-between mb-8">
+                    <h1 className="text-3xl font-bold text-white">Democracy Tools Manager</h1>
+                    <Link href="/create-site">
+                      <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">Create New Site</button>
+                    </Link>
+                  </div>
+                  {error && (
+                    <div className="bg-red-900 text-red-200 p-4 rounded mb-6 border border-red-700">{error}</div>
+                  )}
+                  <div className="space-y-8">
+                    {serversWithSites.length === 0 && !error && (
+                      <div className="text-gray-400">No servers found.</div>
+                    )}
+                    {serversWithSites.map((server) => (
+                      <ServerCard key={server.id} {...server} />
+                    ))}
+                  </div>
+                </div>
+              );
 }

@@ -47,15 +47,15 @@ export default function CreateSitePage() {
 
   return (
     <div className="container mx-auto py-12">
-      <h1 className="text-3xl font-bold mb-8">Create New Site</h1>
-      {error && <div className="bg-red-100 text-red-800 p-4 rounded mb-6">{error}</div>}
+      <h1 className="text-3xl font-bold mb-8 text-white">Create New Site</h1>
+      {error && <div className="bg-red-900 text-red-200 p-4 rounded mb-6 border border-red-700">{error}</div>}
       {loading ? (
-        <div className="text-gray-500">Loading servers...</div>
+        <div className="text-gray-400">Loading servers...</div>
       ) : (
         <div className="max-w-lg mx-auto">
-          <label className="block text-sm font-medium mb-2">Select Server</label>
+          <label className="block text-sm font-medium mb-2 text-white">Select Server</label>
           <select
-            className="w-full border rounded px-3 py-2 mb-6"
+            className="w-full border border-gray-600 rounded px-3 py-2 mb-6 bg-gray-800 text-white"
             value={serverId ?? ''}
             onChange={e => setServerId(Number(e.target.value))}
           >
