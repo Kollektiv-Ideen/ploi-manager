@@ -8,6 +8,7 @@ interface ServerCardProps {
   status: string;
   sites: Site[];
   sitesError: string | null;
+  onRefresh?: (serverId: number) => void;
 }
 
 interface Site {
@@ -18,7 +19,7 @@ interface Site {
   has_repository?: boolean;
 }
 
-export function ServerCard({ id, name, ip_address, status, sites, sitesError }: ServerCardProps) {
+export function ServerCard({ id, name, ip_address, status, sites, sitesError, onRefresh }: ServerCardProps) {
   return (
     <div className="rounded-lg p-6 shadow-lg bg-gray-800">
       <div className="flex items-center justify-between mb-2">
@@ -38,14 +39,20 @@ export function ServerCard({ id, name, ip_address, status, sites, sitesError }: 
             {sites.map((site: Site) => (
               <li key={site.id} className="border border-gray-700 p-3 rounded flex flex-col sm:flex-row sm:items-center sm:justify-between bg-gray-750">
                 <div className="flex-auto">
-                  <a 
-                    href={`https://${site.domain}`} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className=" text-lg text-blue-400 hover:text-blue-300 hover:underline"
-                  >
-                    {site.domain}
-                  </a>
+                  {site.status === 'active' ? (
+                    <a 
+                      href={`https://${site.domain}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-lg text-blue-400 hover:text-blue-300 hover:underline"
+                    >
+                      {site.domain}
+                    </a>
+                  ) : (
+                    <span className="text-lg text-gray-300">
+                      {site.domain}
+                    </span>
+                  )}
                 </div>
                 <span className={`mt-1 sm:mt-0 px-2 py-0.5 rounded text-xs font-medium mr-3 ${site.status === 'active' ? 'bg-green-900 text-green-200' : 'bg-gray-700 text-gray-300'}`}>{site.status}</span>
                 <div className="">
@@ -56,6 +63,17 @@ export function ServerCard({ id, name, ip_address, status, sites, sitesError }: 
           </ul>
         )}
       </div>
+      
+      {onRefresh && (
+        <div className="mt-4 pt-4 border-t border-gray-700">
+          <button
+            onClick={() => onRefresh(id)}
+            className="w-full bg-gray-700 text-gray-300 px-4 py-2 rounded hover:bg-gray-600 transition-colors text-sm"
+          >
+            Refresh Sites
+          </button>
+        </div>
+      )}
     </div>
   );
 }
