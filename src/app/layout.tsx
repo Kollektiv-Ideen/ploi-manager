@@ -8,7 +8,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Democracy Tools Manager",
+  title: "Ploi Manager",
   description: "Manage your democracy tools with Ploi.io",
 };
 

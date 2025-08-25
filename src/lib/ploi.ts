@@ -29,9 +29,11 @@ export const ploi = {
   async listServers() {
     return ploiFetch('/servers');
   },
+
   async listSites(serverId: number) {
     return ploiFetch(`/servers/${serverId}/sites`);
   },
+
   async createSite(serverId: number, data: { domain: string; project_type: string; root_domain: string; }) {
     return ploiFetch(`/servers/${serverId}/sites`, {
       method: 'POST',
@@ -41,32 +43,35 @@ export const ploi = {
       }),
     });
   },
-  async installRepo(serverId: number, siteId: number, data: { provider: string; name: string; branch: string; script_id?: number }) {
+
+  async installRepo(serverId: number, siteId: number, data: { provider: string; name: string; branch: string }) {
     return ploiFetch(`/servers/${serverId}/sites/${siteId}/repository`, {
       method: 'POST',
       body: JSON.stringify(data),
     });
   },
-  async deploySite(serverId: number, siteId: number, deployScriptId?: number) {
+
+  async deploySite(serverId: number, siteId: number) {
     return ploiFetch(`/servers/${serverId}/sites/${siteId}/deploy`, {
       method: 'POST',
-      body: deployScriptId ? JSON.stringify({ script_id: deployScriptId }) : undefined,
     });
   },
+
   async getScript(scriptId: number) {
     return ploiFetch(`/scripts/${scriptId}`);
   },
+
   async updateDeployScript(serverId: number, siteId: number, script: string) {
     return ploiFetch(`/servers/${serverId}/sites/${siteId}/deploy/script`, {
       method: 'PATCH',
-      body: JSON.stringify({ deploy_script: script }),
+      body: JSON.stringify({ script }),
     });
-
   },
+
   async createCertificate(serverId: number, siteId: number, domain: string) {
     return ploiFetch(`/servers/${serverId}/sites/${siteId}/certificates`, {
       method: 'POST',
-      body: JSON.stringify({ type: 'letsencrypt', certificate: domain }),
+      body: JSON.stringify({ domain }),
     });
   },
 };

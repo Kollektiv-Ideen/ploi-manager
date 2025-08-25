@@ -70,14 +70,6 @@ function DeploySiteButton({ serverId, siteId }: { serverId: number; siteId: numb
     setError(null);
     setSuccess(false);
     try {
-      // 1. Setup script
-      const setupRes = await fetch("/api/setup-script", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ serverId, siteId }),
-      });
-      if (!setupRes.ok) throw new Error("Failed to update deploy script");
-      // 2. Trigger deploy
       const deployRes = await fetch(`/api/servers/${serverId}/sites/${siteId}/deploy`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -101,7 +93,7 @@ function DeploySiteButton({ serverId, siteId }: { serverId: number; siteId: numb
         {loading ? "Deploying..." : "Deploy Site"}
       </button>
       {error && <div className="text-red-400 text-sm mt-1">{error}</div>}
-      {success && <div className="text-green-400 text-sm mt-1">Deploy script copied and deployment triggered!</div>}
+      {success && <div className="text-green-400 text-sm mt-1">Deployment triggered!</div>}
     </div>
   );
 }

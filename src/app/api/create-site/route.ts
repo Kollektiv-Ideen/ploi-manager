@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     const scriptId = process.env.DEPLOY_SCRIPT_ID || '8157';
     const scriptRes = await ploi.getScript(Number(scriptId));
     console.log('Script response:', JSON.stringify(scriptRes, null, 2));
-    
+
     // Try different possible response formats
     let script = null;
     if (scriptRes?.data?.script) {
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     } else if (typeof scriptRes === 'string') {
       script = scriptRes;
     }
-    
+
     if (!script) {
       console.error('Script response structure:', scriptRes);
       throw new Error(`Could not fetch script content for script 8157. Response: ${JSON.stringify(scriptRes)}`);

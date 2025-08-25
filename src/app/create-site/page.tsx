@@ -3,6 +3,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { CreateSiteForm } from "@/components/CreateSiteForm";
+import { requireAuth } from "@/lib/auth";
 
 interface Server {
   id: number;
@@ -19,6 +20,23 @@ export default function CreateSitePage() {
   const router = useRouter();
 
   useEffect(() => {
+    // Check authentication on client side
+    async function checkAuth() {
+      try {
+        const res = await fetch("/api/auth/check");
+        if (!res.ok) {
+          router.push("/login");
+          return;
+        }
+      } catch {
+        router.push("/login");
+        return;
+      }
+      
+      // If authenticated, fetch servers
+      await fetchServers();
+    }
+    
     async function fetchServers() {
       setLoading(true);
       setError(null);
@@ -32,8 +50,9 @@ export default function CreateSitePage() {
         setLoading(false);
       }
     }
-    fetchServers();
-  }, []);
+    
+    checkAuth();
+  }, [router]);
 
   async function handleSuccess() {
     // Trigger a revalidation of the dashboard
