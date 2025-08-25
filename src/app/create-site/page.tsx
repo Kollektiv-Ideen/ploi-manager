@@ -3,7 +3,6 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { CreateSiteForm } from "@/components/CreateSiteForm";
-import { requireAuth } from "@/lib/auth";
 
 interface Server {
   id: number;

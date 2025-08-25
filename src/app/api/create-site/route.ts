@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 1) Create site
+    console.log('Step 1: Creating site...');
     const created = await ploi.createSite(serverId, { domain, root_domain, project_type });
     context.createSite = created;
     const siteId = created?.data?.id ?? created?.id;
@@ -27,6 +28,7 @@ export async function POST(req: NextRequest) {
     await wait(5000);
 
     // 2) Install repository
+    console.log('Step 2: Installing repository...');
     const install = await ploi.installRepo(serverId, siteId, {
       provider: process.env.REPO_PROVIDER || 'github',
       name: process.env.REPO_NAME || 'Kollektiv-Ideen/democracy-tools',
@@ -38,7 +40,7 @@ export async function POST(req: NextRequest) {
     await wait(5000);
 
     // 3) Update deploy script from account script id 8157
-    console.log('Fetching script 8157...');
+    console.log('Step 3: Fetching and updating deploy script...');
     const scriptId = process.env.DEPLOY_SCRIPT_ID || '8157';
     const scriptRes = await ploi.getScript(Number(scriptId));
     console.log('Script response:', JSON.stringify(scriptRes, null, 2));
@@ -68,6 +70,7 @@ export async function POST(req: NextRequest) {
     await wait(5000);
 
     // 4) Create certificate for the domain (Let's Encrypt)
+    console.log('Step 4: Creating SSL certificate...');
     const cert = await ploi.createCertificate(serverId, siteId, domain);
     context.createCertificate = cert;
 
@@ -75,6 +78,7 @@ export async function POST(req: NextRequest) {
     await wait(5000);
 
     // 5) Deploy site
+    console.log('Step 5: Triggering deployment...');
     const deploy = await ploi.deploySite(serverId, siteId);
     context.deploy = deploy;
 

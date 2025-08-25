@@ -64,14 +64,14 @@ export const ploi = {
   async updateDeployScript(serverId: number, siteId: number, script: string) {
     return ploiFetch(`/servers/${serverId}/sites/${siteId}/deploy/script`, {
       method: 'PATCH',
-      body: JSON.stringify({ script }),
+      body: JSON.stringify({ deploy_script: script }),
     });
   },
 
   async createCertificate(serverId: number, siteId: number, domain: string) {
     return ploiFetch(`/servers/${serverId}/sites/${siteId}/certificates`, {
       method: 'POST',
-      body: JSON.stringify({ domain }),
+      body: JSON.stringify({ type: 'letsencrypt', certificate: domain }),
     });
   },
 };
