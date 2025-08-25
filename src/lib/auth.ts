@@ -36,24 +36,24 @@ export function validateSession(sessionData: string): boolean {
   }
 }
 
-export function getSessionFromCookies(): string | null {
-  const cookieStore = cookies();
+export async function getSessionFromCookies(): Promise<string | null> {
+  const cookieStore = await cookies();
   return cookieStore.get(SESSION_COOKIE_NAME)?.value || null;
 }
 
-export function isAuthenticated(): boolean {
-  const sessionData = getSessionFromCookies();
+export async function isAuthenticated(): Promise<boolean> {
+  const sessionData = await getSessionFromCookies();
   if (!sessionData) return false;
   return validateSession(sessionData);
 }
 
-export function requireAuth(): void {
-  if (!isAuthenticated()) {
+export async function requireAuth(): Promise<void> {
+  if (!(await isAuthenticated())) {
     redirect('/login');
   }
 }
 
-export function clearSession(): void {
-  const cookieStore = cookies();
+export async function clearSession(): Promise<void> {
+  const cookieStore = await cookies();
   cookieStore.delete(SESSION_COOKIE_NAME);
 }

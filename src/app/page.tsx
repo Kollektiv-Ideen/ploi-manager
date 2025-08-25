@@ -23,7 +23,7 @@ interface Site {
 
 export default async function Dashboard() {
   // Require authentication
-  requireAuth();
+  await requireAuth();
 
   let servers: Server[] = [];
   let error: string | null = null;
